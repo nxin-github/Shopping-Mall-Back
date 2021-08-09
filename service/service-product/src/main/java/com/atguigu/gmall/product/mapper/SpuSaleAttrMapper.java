@@ -14,6 +14,6 @@ import java.util.List;
  */
 @Mapper
 @Repository
-public interface SpuSaleAttrMapper extends BaseMapper {
+public interface SpuSaleAttrMapper extends BaseMapper<SpuSaleAttr> {
     List<SpuSaleAttr> getspuSaleAttrListById(Long spuId);
 }

@@ -83,6 +83,7 @@ public class SkuServiceImpl implements SkuService {
         if (skuSaleAttrValueList != null && skuSaleAttrValueList.size() > 0) {
             for (SkuSaleAttrValue skuSaleAttrValue : skuSaleAttrValueList) {
                 skuSaleAttrValue.setSkuId(skuInfo.getId());
+                skuSaleAttrValue.setSpuId(skuInfo.getSpuId());
                 skuSaleAttrValueMapper.insert(skuSaleAttrValue);
             }
         }

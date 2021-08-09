@@ -92,9 +92,9 @@ public class SpuServiceImpl implements SpuService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void saveSpuInfo(SpuInfo spuInfo) {
-        Long spuInfoId = spuInfo.getId();
 //        保存商品表
         spuInfoMapper.insert(spuInfo);
+        Long spuInfoId = spuInfo.getId();
 //        spuImage 商品图片表
         List<SpuImage> spuImageList = spuInfo.getSpuImageList();
         if (spuImageList != null && spuImageList.size() > 0) {

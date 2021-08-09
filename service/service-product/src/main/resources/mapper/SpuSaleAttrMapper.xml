@@ -3,7 +3,10 @@
 
 <mapper namespace="com.atguigu.gmall.product.mapper.SpuSaleAttrMapper">
     <sql id="spuSaleAttr">
-        sa.id ,sa.spu_id, sa.sale_attr_name,sa.base_sale_attr_id,
+        sa.id ,
+        sa.spu_id,
+        sa.sale_attr_name,
+        sa.base_sale_attr_id,
         sv.id sale_attr_value_id,
         sv.sale_attr_value_name
     </sql>
