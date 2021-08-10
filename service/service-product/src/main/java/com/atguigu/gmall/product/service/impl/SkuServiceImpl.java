@@ -1,5 +1,6 @@
 package com.atguigu.gmall.product.service.impl;
 
+import com.atguigu.gmall.model.product.BaseCategoryView;
 import com.atguigu.gmall.model.product.SkuAttrValue;
 import com.atguigu.gmall.model.product.SkuImage;
 import com.atguigu.gmall.model.product.SkuInfo;
@@ -7,6 +8,7 @@ import com.atguigu.gmall.model.product.SkuSaleAttrValue;
 import com.atguigu.gmall.model.product.SpuImage;
 import com.atguigu.gmall.model.product.SpuSaleAttr;
 import com.atguigu.gmall.model.product.SpuSaleAttrValue;
+import com.atguigu.gmall.product.mapper.BaseCategoryViewMapper;
 import com.atguigu.gmall.product.mapper.SkuAttrValueMapper;
 import com.atguigu.gmall.product.mapper.SkuImageMapper;
 import com.atguigu.gmall.product.mapper.SkuInfoMapper;
@@ -23,6 +25,7 @@ import org.springframework.data.annotation.Transient;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -46,6 +49,8 @@ public class SkuServiceImpl implements SkuService {
     private SkuAttrValueMapper skuAttrValueMapper;
     @Autowired
     private SkuSaleAttrValueMapper skuSaleAttrValueMapper;
+    @Autowired
+    private BaseCategoryViewMapper baseCategoryViewMapper;
 
     @Override
     public List<SpuImage> getImageBySpuId(Long spuId) {
@@ -109,5 +114,31 @@ public class SkuServiceImpl implements SkuService {
             System.out.println("SkuServiceImpld的onSale方法出错了");
         }
         skuInfoMapper.update(skuInfo, queryWrapper);
+    }
+
+    @Override
+    public SkuInfo getSkuById(Long skuId) {
+        SkuInfo skuInfo = skuInfoMapper.selectById(skuId);
+        QueryWrapper<SkuImage> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("sku_id", skuId);
+        List<SkuImage> skuImages = skuImageMapper.selectList(queryWrapper);
+        skuInfo.setSkuImageList(skuImages);
+        return skuInfo;
+    }
+
+    @Override
+    public BaseCategoryView getCategoryView(Long category3Id) {
+        return baseCategoryViewMapper.selectById(category3Id);
+    }
+
+    @Override
+    public BigDecimal getProce(Long skuId) {
+        SkuInfo skuInfo = skuInfoMapper.selectById(skuId);
+        return skuInfo.getPrice();
+    }
+
+    @Override
+    public List<SpuSaleAttr> getSpuSaleAttrListCheckBySku(Long skuId, Long spuId) {
+        return spuSaleAttrMapper.selectSpuSaleAttrListCheckBySku(skuId,spuId);
     }
 }

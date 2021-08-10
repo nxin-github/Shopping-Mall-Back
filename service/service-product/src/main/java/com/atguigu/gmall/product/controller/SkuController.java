@@ -1,6 +1,7 @@
 package com.atguigu.gmall.product.controller;
 
 import com.atguigu.gmall.common.result.Result;
+import com.atguigu.gmall.model.product.BaseCategoryView;
 import com.atguigu.gmall.model.product.SkuInfo;
 import com.atguigu.gmall.model.product.SpuImage;
 import com.atguigu.gmall.model.product.SpuSaleAttr;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -103,4 +105,48 @@ public class SkuController {
         return Result.ok();
     }
 
+    //    -----------------------------------------------------------------本地模块调用----------------------------------------------
+    /*
+     *   功能描述:商品的名称，重量，默认图片，skuImageList图片信息
+     *   @Param:skuid
+     *   @Return:SkuInfo
+     */
+    @ApiOperation(value = "商品的名称，重量，默认图片，skuImageList图片信息")
+    @GetMapping("getSkuById/{skuId}")
+    public SkuInfo getSkuById(@PathVariable Long skuId) {
+        return skuService.getSkuById(skuId);
+    }
+
+    /*
+     *   功能描述:获取到category1Name，category2Name，category3Name 拼接 skuName!
+     *   @Param:skuId
+     *   @Return:
+     */
+    @ApiOperation(value = "获取到category1Name，category2Name，category3Name 拼接 skuName!")
+    @GetMapping("getCategoryView/{category3Id}")
+    public BaseCategoryView getCategoryView(@PathVariable Long category3Id) {
+        return skuService.getCategoryView(category3Id);
+    }
+
+    /*
+     *   功能描述:根据skuid查询价格
+     *   @Param:skuId
+     *   @Return:BigDecimal
+     */
+    @ApiOperation(value = "根据skuid查询价格")
+    @GetMapping("getPrice/{skuId}")
+    public BigDecimal getProce(@PathVariable Long skuId) {
+        return skuService.getProce(skuId);
+    }
+
+    /*
+     *   功能描述:回显销售属性 + 销售属性值 + 锁定功能
+     *   @Param:skuId、spuId
+     *   @Return:List<SpuSaleAttr>
+     */
+    @ApiOperation(value = "回显销售属性 + 销售属性值 + 锁定")
+    @GetMapping("getSpuSaleAttrListCheckBySku/{skuId}/{spuId}")
+    public List<SpuSaleAttr> getSpuSaleAttrListCheckBySku(@PathVariable Long skuId, @PathVariable Long spuId) {
+        return skuService.getSpuSaleAttrListCheckBySku(skuId, spuId);
+    }
 }
