@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author：王木风
@@ -79,4 +80,6 @@ public interface SkuService {
      *   @Return:List<SpuSaleAttr>
      */
     List<SpuSaleAttr> getSpuSaleAttrListCheckBySku(Long skuId, Long spuId);
+
+    Map getSkuValueIdsMap(Long spuId);
 }

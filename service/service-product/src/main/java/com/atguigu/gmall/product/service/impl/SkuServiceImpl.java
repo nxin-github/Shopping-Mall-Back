@@ -7,7 +7,6 @@ import com.atguigu.gmall.model.product.SkuInfo;
 import com.atguigu.gmall.model.product.SkuSaleAttrValue;
 import com.atguigu.gmall.model.product.SpuImage;
 import com.atguigu.gmall.model.product.SpuSaleAttr;
-import com.atguigu.gmall.model.product.SpuSaleAttrValue;
 import com.atguigu.gmall.product.mapper.BaseCategoryViewMapper;
 import com.atguigu.gmall.product.mapper.SkuAttrValueMapper;
 import com.atguigu.gmall.product.mapper.SkuImageMapper;
@@ -21,12 +20,13 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.annotation.Transient;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author：王木风
@@ -140,5 +140,20 @@ public class SkuServiceImpl implements SkuService {
     @Override
     public List<SpuSaleAttr> getSpuSaleAttrListCheckBySku(Long skuId, Long spuId) {
         return spuSaleAttrMapper.selectSpuSaleAttrListCheckBySku(skuId,spuId);
+    }
+
+    @Override
+    public Map getSkuValueIdsMap(Long spuId) {
+        Map<Object, Object> map = new HashMap<>();
+//      页面获取到的是“102|105” 和skuid 42
+        List<Map> mapList = skuSaleAttrValueMapper.selectSkuValueIdsMap(spuId);
+//        values_ids sku_id
+//      44 114|116
+//        45 114|117
+        for (Map skuMap : mapList) {
+//            赋值
+            map.put(skuMap.get("value_ids"), skuMap.get("sku_id"));
+        }
+        return map;
     }
 }

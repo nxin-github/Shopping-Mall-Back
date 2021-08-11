@@ -9,24 +9,31 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author：王木风
  * @date 2021/8/10 8:55
  * @description：
  */
-@FeignClient("service-product")
+
+//fallback兜底类
+//@FeignClient(value = "service-product", fallback = ProductDegradeFeignClient.class)
+@FeignClient(value = "service-product")
 public interface ProductFeignClient {
 
-    @GetMapping("getSkuById/{skuId}")
-    public SkuInfo getSkuById(@PathVariable Long skuId);
+    @GetMapping("admin/product/getSkuById/{skuId}")
+    SkuInfo getSkuById(@PathVariable Long skuId);
 
-    @GetMapping("getCategoryView/{category3Id}")
-    public BaseCategoryView getCategoryView(@PathVariable Long category3Id);
+    @GetMapping("admin/product/getCategoryView/{category3Id}")
+    BaseCategoryView getCategoryView(@PathVariable Long category3Id);
 
-    @GetMapping("getPrice/{skuId}")
-    public BigDecimal getProce(@PathVariable Long skuId);
+    @GetMapping("admin/product/getPrice/{skuId}")
+    BigDecimal getProce(@PathVariable Long skuId);
 
-    @GetMapping("getSpuSaleAttrListCheckBySku/{skuId}/{spuId}")
-    public List<SpuSaleAttr> getSpuSaleAttrListCheckBySku(@PathVariable Long skuId, @PathVariable Long spuId);
+    @GetMapping("admin/product/getSpuSaleAttrListCheckBySku/{skuId}/{spuId}")
+    List<SpuSaleAttr> getSpuSaleAttrListCheckBySku(@PathVariable Long skuId, @PathVariable Long spuId);
+
+    @GetMapping("admin/product/getSkuValueIdsMap/{spuId}")
+    public Map getSkuValueIdsMap(@PathVariable Long spuId);
 }

@@ -9,6 +9,7 @@ import com.atguigu.gmall.product.service.SkuService;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.redisson.transaction.operation.map.MapOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author：王木风
@@ -148,5 +150,11 @@ public class SkuController {
     @GetMapping("getSpuSaleAttrListCheckBySku/{skuId}/{spuId}")
     public List<SpuSaleAttr> getSpuSaleAttrListCheckBySku(@PathVariable Long skuId, @PathVariable Long spuId) {
         return skuService.getSpuSaleAttrListCheckBySku(skuId, spuId);
+    }
+
+    @ApiOperation(value = "获取销售属性值id雨skuid组成的map")
+    @GetMapping("getSkuValueIdsMap/{spuId}")
+    public Map getSkuValueIdsMap(@PathVariable Long spuId) {
+        return skuService.getSkuValueIdsMap(spuId);
     }
 }

@@ -9,6 +9,8 @@
         <module>service</module>
         <module>server-gateway</module>
         <module>service_client</module>
+        <module>web-util</module>
+        <module>web</module>
     </modules>
 
     <!--引入spring boot 父工程-->
