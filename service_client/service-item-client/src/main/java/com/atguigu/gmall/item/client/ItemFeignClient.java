@@ -13,9 +13,11 @@ import org.springframework.web.bind.annotation.PathVariable;
  * @description：
  */
 @FeignClient(value = "service-item" , fallback = ItemDegradeFeignClient.class)
+//@FeignClient(value = "service-item")
 public interface ItemFeignClient {
 
     //  将service-item 中的控制器url 地址发布到feign上！
+
     /**
      * @param skuId
      * @return

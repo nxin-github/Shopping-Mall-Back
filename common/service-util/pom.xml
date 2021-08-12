@@ -59,5 +59,11 @@
             <artifactId>commons-pool2</artifactId>
             <version>2.6.0</version>
         </dependency>
+        <!-- redisson -->
+        <dependency>
+            <groupId>org.redisson</groupId>
+            <artifactId>redisson</artifactId>
+            <version>3.15.3</version>
+        </dependency>
     </dependencies>
 </project>

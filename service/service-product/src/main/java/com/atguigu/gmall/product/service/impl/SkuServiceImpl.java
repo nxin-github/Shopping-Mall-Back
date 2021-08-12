@@ -20,6 +20,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,7 +52,8 @@ public class SkuServiceImpl implements SkuService {
     private SkuSaleAttrValueMapper skuSaleAttrValueMapper;
     @Autowired
     private BaseCategoryViewMapper baseCategoryViewMapper;
-
+    @Autowired
+    private RedisTemplate redisTemplate;
     @Override
     public List<SpuImage> getImageBySpuId(Long spuId) {
         QueryWrapper<SpuImage> queryWrapper = new QueryWrapper<>();

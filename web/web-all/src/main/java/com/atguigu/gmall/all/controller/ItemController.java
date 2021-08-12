@@ -18,7 +18,7 @@ import java.util.Map;
  */
 @Controller
 public class ItemController {
-    @Qualifier("service-item")
+//    @Qualifier("service-item")
     @Autowired
     private ItemFeignClient itemFeignClient;
 

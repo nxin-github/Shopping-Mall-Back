@@ -3,6 +3,7 @@ package com.atguigu.gmall.product.client;
 import com.atguigu.gmall.model.product.BaseCategoryView;
 import com.atguigu.gmall.model.product.SkuInfo;
 import com.atguigu.gmall.model.product.SpuSaleAttr;
+import com.atguigu.gmall.product.client.impl.ProductDegradeFeignClient;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,8 +19,8 @@ import java.util.Map;
  */
 
 //fallback兜底类
-//@FeignClient(value = "service-product", fallback = ProductDegradeFeignClient.class)
-@FeignClient(value = "service-product")
+@FeignClient(value = "service-product", fallback = ProductDegradeFeignClient.class)
+//@FeignClient(value = "service-product")
 public interface ProductFeignClient {
 
     @GetMapping("admin/product/getSkuById/{skuId}")
