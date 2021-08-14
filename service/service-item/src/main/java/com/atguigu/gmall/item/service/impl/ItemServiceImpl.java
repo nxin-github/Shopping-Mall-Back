@@ -14,6 +14,8 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * @Author：王木风
@@ -24,9 +26,57 @@ import java.util.Map;
 public class ItemServiceImpl implements ItemService {
     @Autowired
     private ProductFeignClient productFeignClient;
+    @Autowired
+    private ThreadPoolExecutor poolExecutor;
 
-    // 用户通过网关 -- web-all --feign{api/item/{skuId}}--> service-item --feign{url}--> service-product
+    //  利用异步编排优化
     @Override
+    public Map<String, Object> getItemById(Long skuId) {
+        //  声明对象
+        Map<String, Object> result = new HashMap<>();
+
+        CompletableFuture<SkuInfo> skuInfoCompletableFuture = CompletableFuture.supplyAsync(() -> {
+            SkuInfo skuInfo = productFeignClient.getSkuById(skuId);
+            result.put("skuInfo", skuInfo);
+            return skuInfo;
+        }, poolExecutor);
+
+//        保存商品价格
+        CompletableFuture<Void> skuPriceCompletableFuture = CompletableFuture.runAsync(() -> {
+            BigDecimal skuPrice = productFeignClient.getProce(skuId);
+            result.put("price", skuPrice);
+        }, poolExecutor);
+//      保存分类数据
+        CompletableFuture<Void> categoryViewCompletableFuture = skuInfoCompletableFuture.thenAcceptAsync((skuInfo) -> {
+            BaseCategoryView categoryView = productFeignClient.getCategoryView(skuInfo.getCategory3Id());
+            result.put("categoryView", categoryView);
+        },poolExecutor);
+        //  获取到销售属性+销售属性值+锁定
+        CompletableFuture<Void> supCompletableFuture = skuInfoCompletableFuture.thenAcceptAsync((skuInfo) -> {
+            List<SpuSaleAttr> spuSaleAttrListCheckBySku = productFeignClient.getSpuSaleAttrListCheckBySku(skuId, skuInfo.getSpuId());
+            result.put("spuSaleAttrList", spuSaleAttrListCheckBySku);
+        },poolExecutor);
+        //  获取到销售属性值Id 与 skuId 组成的map 集合
+        CompletableFuture<Void> jsonCompletableFuture = skuInfoCompletableFuture.thenAcceptAsync((skuInfo) -> {
+            Map idsMap = productFeignClient.getSkuValueIdsMap(skuInfo.getSpuId());
+            //  需要将这个map 转换为Json 字符串！
+            String idsJson = JSON.toJSONString(idsMap);
+            result.put("valuesSkuJson", idsJson);
+        },poolExecutor);
+
+        //  获取到数据之后，将数据进行整合！allOf !
+        //  汇总数据
+        CompletableFuture.allOf(skuInfoCompletableFuture,
+                skuPriceCompletableFuture,
+                categoryViewCompletableFuture,
+                supCompletableFuture,
+                jsonCompletableFuture).join();
+        //  最终返回的map！
+        return result;
+    }
+
+        // 用户通过网关 -- web-all --feign{api/item/{skuId}}--> service-item --feign{url}--> service-product
+    /*@Override
     public Map<String, Object> getItemById(Long skuId) {
         //  声明对象
         Map<String, Object> result = new HashMap<>();
@@ -53,5 +103,5 @@ public class ItemServiceImpl implements ItemService {
             result.put("valuesSkuJson",idsJson);
         }
         return result;
+    }*/
     }
-}
