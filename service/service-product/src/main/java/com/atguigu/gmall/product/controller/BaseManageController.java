@@ -1,5 +1,6 @@
 package com.atguigu.gmall.product.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.atguigu.gmall.common.result.Result;
 import com.atguigu.gmall.model.product.BaseAttrInfo;
 import com.atguigu.gmall.model.product.BaseAttrValue;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.spring.web.json.Json;
 
 import java.util.List;
 
@@ -102,4 +104,15 @@ public class BaseManageController {
         return Result.ok(baseAttrValues);
     }
 
+    /*
+     *   功能描述:获取全部分类信息
+     *   @Param:
+     *   @Return:
+     */
+    @ApiOperation(value = "获取全部分类信息")
+    @GetMapping("getBaseCategoryList")
+    public Result getBaseCategoryList() {
+        List<JSONObject> list = manageService.getBaseCategroyList();
+        return Result.ok(list);
+    }
 }

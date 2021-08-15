@@ -11,5 +11,18 @@
 
     <artifactId>service-product-client</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.atguigu.gmall</groupId>
+            <artifactId>common-util</artifactId>
+            <version>1.0</version>
+            <scope>compile</scope>
+        </dependency>
 
+        <dependency>
+            <groupId>com.atguigu.gmall</groupId>
+            <artifactId>model</artifactId>
+            <version>1.0</version>
+        </dependency>
+    </dependencies>
 </project>

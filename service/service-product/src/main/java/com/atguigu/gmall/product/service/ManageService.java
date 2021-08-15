@@ -1,6 +1,7 @@
 package com.atguigu.gmall.product.service;
 
 
+import com.alibaba.fastjson.JSONObject;
 import com.atguigu.gmall.model.product.BaseAttrInfo;
 import com.atguigu.gmall.model.product.BaseAttrValue;
 import com.atguigu.gmall.model.product.BaseCategory1;
@@ -10,6 +11,7 @@ import com.atguigu.gmall.model.product.BaseSaleAttr;
 import com.atguigu.gmall.model.product.BaseTrademark;
 import com.atguigu.gmall.model.product.SpuInfo;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import springfox.documentation.spring.web.json.Json;
 
 import java.util.List;
 
@@ -72,4 +74,11 @@ public interface ManageService {
      *   @Return:
      */
     List<BaseAttrValue> getAttrValueList(Long attrId);
+
+    /*
+     *   功能描述:获取全部分类信息
+     *   @Param:
+     *   @Return:
+     */
+    List<JSONObject> getBaseCategroyList();
 }

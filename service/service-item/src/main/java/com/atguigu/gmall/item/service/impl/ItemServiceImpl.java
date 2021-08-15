@@ -7,7 +7,6 @@ import com.atguigu.gmall.model.product.SkuInfo;
 import com.atguigu.gmall.model.product.SpuSaleAttr;
 import com.atguigu.gmall.product.client.ProductFeignClient;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -75,7 +74,7 @@ public class ItemServiceImpl implements ItemService {
         return result;
     }
 
-        // 用户通过网关 -- web-all --feign{api/item/{skuId}}--> service-item --feign{url}--> service-product
+    // 用户通过网关 -- web-all --feign{api/item/{skuId}}--> service-item --feign{url}--> service-product
     /*@Override
     public Map<String, Object> getItemById(Long skuId) {
         //  声明对象
@@ -104,4 +103,4 @@ public class ItemServiceImpl implements ItemService {
         }
         return result;
     }*/
-    }
+}

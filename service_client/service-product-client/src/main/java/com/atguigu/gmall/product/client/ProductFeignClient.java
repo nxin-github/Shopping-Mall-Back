@@ -1,5 +1,6 @@
 package com.atguigu.gmall.product.client;
 
+import com.atguigu.gmall.common.result.Result;
 import com.atguigu.gmall.model.product.BaseCategoryView;
 import com.atguigu.gmall.model.product.SkuInfo;
 import com.atguigu.gmall.model.product.SpuSaleAttr;
@@ -36,5 +37,8 @@ public interface ProductFeignClient {
     List<SpuSaleAttr> getSpuSaleAttrListCheckBySku(@PathVariable Long skuId, @PathVariable Long spuId);
 
     @GetMapping("admin/product/getSkuValueIdsMap/{spuId}")
-    public Map getSkuValueIdsMap(@PathVariable Long spuId);
+    Map getSkuValueIdsMap(@PathVariable Long spuId);
+
+    @GetMapping("admin/product/getBaseCategoryList")
+    Result getBaseCategoryList();
 }
