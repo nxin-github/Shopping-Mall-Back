@@ -74,11 +74,4 @@ public interface ManageService {
      *   @Return:
      */
     List<BaseAttrValue> getAttrValueList(Long attrId);
-
-    /*
-     *   功能描述:获取全部分类信息
-     *   @Param:
-     *   @Return:
-     */
-    List<JSONObject> getBaseCategroyList();
 }

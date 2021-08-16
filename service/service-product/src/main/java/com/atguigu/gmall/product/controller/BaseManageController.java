@@ -103,16 +103,4 @@ public class BaseManageController {
         List<BaseAttrValue> baseAttrValues = manageService.getAttrValueList(attrId);
         return Result.ok(baseAttrValues);
     }
-
-    /*
-     *   功能描述:获取全部分类信息
-     *   @Param:
-     *   @Return:
-     */
-    @ApiOperation(value = "获取全部分类信息")
-    @GetMapping("getBaseCategoryList")
-    public Result getBaseCategoryList() {
-        List<JSONObject> list = manageService.getBaseCategroyList();
-        return Result.ok(list);
-    }
 }

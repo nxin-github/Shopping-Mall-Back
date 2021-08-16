@@ -77,7 +77,7 @@ public class BaseTrademarkController {
     }
 
     /*
-     *   功能描述:5、根据Id获取品牌
+     *   功能描述:根据Id获取品牌
      *   @Param:品牌Id
      *   @Return:
      */
