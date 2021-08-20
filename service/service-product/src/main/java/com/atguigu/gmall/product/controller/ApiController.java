@@ -120,6 +120,7 @@ public class ApiController {
      * @Param:skuId
      * @Return:SearchaAttr
      */
+    @ApiOperation(value = "获取sku对应平台属性")
     @GetMapping("getSearchaAttrs/{skuId}")
     public List<SearchAttr> getSearchaAttrs(@PathVariable Long skuId) {
         List<SearchAttr>  searchaAttrs = apiService.getSearchaAttrs(skuId);

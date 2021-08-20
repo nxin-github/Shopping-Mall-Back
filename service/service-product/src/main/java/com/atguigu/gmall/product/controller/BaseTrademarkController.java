@@ -5,6 +5,7 @@ import com.atguigu.gmall.model.product.BaseTrademark;
 import com.atguigu.gmall.product.service.BaseTrademarkService;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.api.R;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @date 2021/8/6 21:24
  * @description：品牌接口
  */
+@Api(tags = "品牌接口")
 @RestController
 @RequestMapping("/admin/product/baseTrademark")
 public class BaseTrademarkController {

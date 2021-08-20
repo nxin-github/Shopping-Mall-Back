@@ -289,6 +289,11 @@ public class ApiServiceImpl implements ApiService {
     @Override
     public List<SearchAttr> getSearchaAttrs(Long skuId) {
         List<SearchAttr> searchAttr = searchaAttrMapper.getSearchaAttrs(skuId);
-        return null;
+        System.out.println("====================================================================================");
+        System.out.println("====================================================================================");
+        System.out.println(searchAttr.toString());
+        System.out.println("====================================================================================");
+        System.out.println("====================================================================================");
+        return searchAttr;
     }
 }

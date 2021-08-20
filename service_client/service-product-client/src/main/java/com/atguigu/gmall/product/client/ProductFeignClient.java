@@ -48,5 +48,5 @@ public interface ProductFeignClient {
     BaseTrademark getTrademark(@PathVariable Long id);
 
     @GetMapping("admin/product/getSearchaAttrs/{id}")
-    public List<SearchAttr> getSearchaAttrs(@PathVariable Long skuId);
+    List<SearchAttr> getSearchaAttrs(@PathVariable Long id);
 }

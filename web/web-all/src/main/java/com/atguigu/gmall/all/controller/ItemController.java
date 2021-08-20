@@ -14,7 +14,7 @@ import java.util.Map;
 /**
  * @Author：王木风
  * @date 2021/8/11 21:47
- * @description：
+ * @description：详情页
  */
 @Controller
 public class ItemController {

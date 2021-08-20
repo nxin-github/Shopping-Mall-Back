@@ -2,6 +2,7 @@ package com.atguigu.gmall.item.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.atguigu.gmall.item.service.ItemService;
+import com.atguigu.gmall.list.client.ListFeignClient;
 import com.atguigu.gmall.model.product.BaseCategoryView;
 import com.atguigu.gmall.model.product.SkuInfo;
 import com.atguigu.gmall.model.product.SpuSaleAttr;
@@ -27,6 +28,8 @@ public class ItemServiceImpl implements ItemService {
     private ProductFeignClient productFeignClient;
     @Autowired
     private ThreadPoolExecutor poolExecutor;
+    @Autowired
+    private ListFeignClient listFeignClient;
 
     //  利用异步编排优化
     @Override
@@ -62,6 +65,10 @@ public class ItemServiceImpl implements ItemService {
             String idsJson = JSON.toJSONString(idsMap);
             result.put("valuesSkuJson", idsJson);
         },poolExecutor);
+//        保存商品热度
+        CompletableFuture<Void> hotScoreCompletableFuture = CompletableFuture.runAsync(() -> {
+            listFeignClient.incrHotScore(skuId);
+        }, poolExecutor);
 
         //  获取到数据之后，将数据进行整合！allOf !
         //  汇总数据
@@ -69,7 +76,7 @@ public class ItemServiceImpl implements ItemService {
                 skuPriceCompletableFuture,
                 categoryViewCompletableFuture,
                 supCompletableFuture,
-                jsonCompletableFuture).join();
+                jsonCompletableFuture,hotScoreCompletableFuture).join();
         //  最终返回的map！
         return result;
     }

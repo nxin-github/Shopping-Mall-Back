@@ -2,6 +2,7 @@ package com.atguigu.gmall.model.list;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.DateFormat;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
@@ -27,7 +28,7 @@ public class Goods {
     @Field(type = FieldType.Double)
     private Double price;
 
-    @Field(type = FieldType.Date)
+    @Field(type = FieldType.Date,format = DateFormat.basic_date_time)
     private Date createTime; // 新品
 
     @Field(type = FieldType.Long)

@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
 
 /**
  * @Author：王木风
@@ -16,6 +17,7 @@ import org.springframework.context.annotation.ComponentScan;
 @EnableDiscoveryClient
 @EnableFeignClients(basePackages = {"com.atguigu.gmall"})
 @ComponentScan({"com.atguigu.gmall"})
+@EnableElasticsearchRepositories
 public class ServicelistApplication {
     public static void main(String[] args) {
         SpringApplication.run(ServicelistApplication.class, args);
