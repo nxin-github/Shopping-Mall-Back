@@ -23,6 +23,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
+import java.net.URLDecoder;
 import java.util.List;
 
 /**
@@ -55,6 +56,7 @@ public class AuthGlobalFilter implements GlobalFilter {
         //  获取用户Id 存储在缓存中的，key = token 组成
         //  userId 返回 -1 的话，相当于用户盗用了token ，不能正常返回userId
         String userId = getUserId(request);
+        String userTempId = getuserTempId(request);
         //  判断
         if ("-1".equals(userId)){
             //  应该做出响应
@@ -96,14 +98,33 @@ public class AuthGlobalFilter implements GlobalFilter {
 
 
         //  如果上述没有问题，则需要将用户Id 进行保存 ！ 记住的！
-        if (!StringUtils.isEmpty(userId)) {
-            // request 对象 request 本身就是 ServerHttpRequest
-            request.mutate().header("userId", userId).build();
+        if (!StringUtils.isEmpty(userId) || !StringUtils.isEmpty(userTempId)) {
+            if(!StringUtils.isEmpty(userId)) {
+                request.mutate().header("userId", userId).build();
+            }
+            if(!StringUtils.isEmpty(userTempId)) {
+                request.mutate().header("userTempId", userTempId).build();
+            }
             //  返回数据
             return chain.filter(exchange.mutate().request(request).build());
         }
         //  默认返回
         return chain.filter(exchange);
+    }
+
+    private String getuserTempId(ServerHttpRequest request) {
+        String userTempId = "";
+//        先从cookie中获取数据
+        List<String> tokenList  = request.getHeaders().get("userTempId");
+        if (tokenList != null) {
+            userTempId = tokenList.get(0);
+        } else {
+            HttpCookie cookie = request.getCookies().getFirst("userTempId");
+            if (cookie != null) {
+                userTempId = URLDecoder.decode(cookie.getValue());
+            }
+        }
+        return userTempId;
     }
 
     /**
