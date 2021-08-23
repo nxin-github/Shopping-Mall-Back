@@ -35,6 +35,7 @@ import java.util.List;
 public class AuthGlobalFilter implements GlobalFilter {
     @Autowired
     private RedisTemplate redisTemplate;
+
     //  获取白名单中控制器路径
     @Value("${authUrls.url}")//再nacos配置文件中
     private String authUrl; // authUrl=trade.html,myOrder.html,list.html #

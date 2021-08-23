@@ -15,8 +15,26 @@ public interface CartService {
 
     /**
      * 查询购物车
-     * @param userId
+     * @param: userId
+     * @param: userTempId
      * @return List<CartInfo>
      */
     List<CartInfo> carList(String userId,String userTempId);
+
+    /*
+     *   功能描述:更改选中状态
+     *   @Param:String userId
+     *   @Param:Long skuId
+     *   @Param:Integer isChecked
+     *   @Return:Result
+     */
+    void checkCart(Long skuId, Integer isChecked, String userId);
+
+    /*
+     *   功能描述:删除购物车
+     *   @Param:Long skuId
+     *   @Param:String userId
+     *   @Return:Result
+     */
+    void deleteCart(Long skuId, String userId);
 }

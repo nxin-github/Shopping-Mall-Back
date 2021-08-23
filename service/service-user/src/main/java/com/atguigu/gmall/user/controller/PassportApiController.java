@@ -43,7 +43,6 @@ public class PassportApiController {
     @PostMapping("login")
     public Result login(@RequestBody UserInfo userInfo, HttpServletRequest request) {
         UserInfo info = userService.login(userInfo);
-
         if (info != null) {
             String token = UUID.randomUUID().toString().replaceAll("-", "");
             HashMap<String, Object> map = new HashMap<>();

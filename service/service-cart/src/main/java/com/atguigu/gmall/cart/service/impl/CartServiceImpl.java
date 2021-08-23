@@ -10,9 +10,11 @@ import com.atguigu.gmall.model.cart.CartInfo;
 import com.atguigu.gmall.model.product.SkuInfo;
 import com.atguigu.gmall.product.client.ProductFeignClient;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import jodd.time.TimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -145,6 +147,61 @@ public class CartServiceImpl implements CartService {
     }
 
     /*
+     *   功能描述:更改选中状态
+     *   @Param:String userId
+     *   @Param:Long skuId
+     *   @Param:Integer isChecked
+     *   @Return:Result
+     */
+    @Override
+    @Async
+    public void checkCart(Long skuId, Integer isChecked, String userId) {
+        CartInfo cartInfo = new CartInfo();
+        cartInfo.setIsChecked(isChecked);
+        UpdateWrapper<CartInfo> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("sku_id",skuId);
+        updateWrapper.eq("user_id",userId);
+        cartInfoMapper.update(cartInfo, updateWrapper);
+//        修改缓存
+        String carteKey = getCarteKey(userId);
+        CartInfo cartInfo1 = (CartInfo) redisTemplate.opsForHash().get(carteKey, skuId.toString());
+        cartInfo1.setIsChecked(isChecked);
+        //  判断这个对象是否为空
+        if (cartInfo1 != null) {
+            cartInfo1.setUpdateTime(new Timestamp(new Date().getTime()));
+            //  将这个对象写入缓存
+            redisTemplate.opsForHash().put(carteKey, skuId.toString(), cartInfo1);
+        } else {
+            redisTemplate.opsForHash().put(carteKey, skuId.toString(), cartInfo1);
+        }
+        this.setCartKeyExpire(carteKey);
+    }
+
+
+    /*
+     *   功能描述:删除购物车
+     *   @Param:Long skuId
+     *   @Param:String userId
+     *   @Return:Result
+     */
+    @Override
+    @Transactional
+    public void deleteCart(Long skuId, String userId) {
+        //  删除mysql
+        //  delete from cart_info where sku_id = ? and user_id = ?
+        cartInfoMapper.delete(new QueryWrapper<CartInfo>().eq("sku_id",skuId).eq("user_id",userId));
+        //  再删除redis
+        //  获取到缓存的key
+        String cartKey = getCarteKey(userId);
+        //  判断这个大购物车key 中是否有小的skuId.toString
+        Boolean flag = redisTemplate.boundHashOps(cartKey).hasKey(skuId.toString());
+        //  当前这个购物车中有这个商品
+        if (flag){
+            redisTemplate.boundHashOps(cartKey).delete(skuId.toString());
+        }
+    }
+
+    /*
      *   功能描述:合并购物车
      *   @Param:String userId
      *   @Param:String userTempId
@@ -192,7 +249,7 @@ public class CartServiceImpl implements CartService {
     }
 
     /*
-     *   功能描述:缓存查询购物车
+     *   功能描述:数据库查询购物车
      *   @Param:String userId
      *   @Return:List<CartInfo>
      */
