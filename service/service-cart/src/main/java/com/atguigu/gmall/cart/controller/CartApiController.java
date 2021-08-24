@@ -27,7 +27,7 @@ import java.util.List;
 @Api(tags = "购物车操作")
 @RestController
 @RequestMapping("api/cart")
-public class CartController {
+public class CartApiController {
     @Autowired
     private CartService cartService;
 
@@ -72,7 +72,7 @@ public class CartController {
      *   @Return:Result
      */
     @ApiOperation("更改购物项选中状态")
-    @PutMapping("checkCart/{skuId}/{isChecked}")
+    @GetMapping("checkCart/{skuId}/{isChecked}")
     public Result checkCart(@PathVariable Long skuId, @PathVariable Integer isChecked, HttpServletRequest request) {
         String userId = AuthContextHolder.getUserId(request);
         if (StringUtils.isEmpty(userId)) {
@@ -95,11 +95,22 @@ public class CartController {
         //  跟用户Id 有关系！
         String userId = AuthContextHolder.getUserId(request);
         //  获取临时用户Id
-        if (StringUtils.isEmpty(userId)){
+        if (StringUtils.isEmpty(userId)) {
             userId = AuthContextHolder.getUserTempId(request);
         }
         //  调用删除购物车数据的方法
-        cartService.deleteCart(skuId,userId);
+        cartService.deleteCart(skuId, userId);
         return Result.ok();
+    }
+
+    /*
+     *   功能描述:根据userId查询购物车（为订单使用）
+     *   @Param:Long userId
+     *   @Return:List<CarInfo>
+     */
+    @ApiOperation(value = "根据userId查询购物车（为订单使用）")
+    @GetMapping("getCartCheckedList/{userId}")
+    public List<CartInfo> getCartCheckedList(@PathVariable String userId) {
+        return cartService.getCartCheckedList(userId);
     }
 }

@@ -1,23 +1,19 @@
 package com.atguigu.gmall.list.service.impl;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.atguigu.gmall.list.repository.GoodsRepository;
 import com.atguigu.gmall.list.service.SearchService;
 import com.atguigu.gmall.model.list.*;
-import com.atguigu.gmall.model.product.BaseAttrInfo;
 import com.atguigu.gmall.model.product.BaseCategoryView;
 import com.atguigu.gmall.model.product.BaseTrademark;
 import com.atguigu.gmall.model.product.SkuInfo;
 import com.atguigu.gmall.product.client.ProductFeignClient;
 import lombok.SneakyThrows;
 import org.apache.lucene.search.join.ScoreMode;
-import org.aspectj.weaver.ast.Var;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
-import org.elasticsearch.client.ml.job.results.Bucket;
 import org.elasticsearch.common.text.Text;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.Operator;
@@ -36,14 +32,11 @@ import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import javax.swing.*;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ThreadPoolExecutor;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**

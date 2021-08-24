@@ -343,7 +343,7 @@
                 }
             },
 
-            addToCart(skuId, skuNum=1) {
+            addToCart(skuId, skuNum) {
                 cart.addToCart(skuId, skuNum).then(response => {
                     this.init()
                 })
@@ -354,6 +354,7 @@
             },
 
             down(item) {
+                debugger
                 if(item.skuNum > 1) {
                     this.addToCart(item.skuId, -1)
                 }

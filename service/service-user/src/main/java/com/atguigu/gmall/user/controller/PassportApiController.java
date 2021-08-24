@@ -4,11 +4,15 @@ import com.alibaba.fastjson.JSONObject;
 import com.atguigu.gmall.common.result.Result;
 import com.atguigu.gmall.common.util.IpUtil;
 import com.atguigu.gmall.constant.RedisConst;
+import com.atguigu.gmall.model.user.UserAddress;
 import com.atguigu.gmall.model.user.UserInfo;
+import com.atguigu.gmall.user.service.UserAddressService;
 import com.atguigu.gmall.user.service.UserService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,23 +20,26 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 /**
-* @Author：王木风
-* @date 2021/8/20 8:47
-* @description：
-*/
+ * @Author：王木风
+ * @date 2021/8/20 8:47
+ * @description：
+ */
 @RestController
 @RequestMapping("/api/user/passport")
 public class PassportApiController {
-
     @Autowired
     private UserService userService;
 
     @Autowired
     private RedisTemplate redisTemplate;
+
+    @Autowired
+    private UserAddressService userAddressService;
 
     /**
      * 登录
@@ -67,8 +74,19 @@ public class PassportApiController {
      * @return
      */
     @GetMapping("logout")
-    public Result logout(HttpServletRequest request){
+    public Result logout(HttpServletRequest request) {
         redisTemplate.delete(RedisConst.USER_LOGIN_KEY_PREFIX + request.getHeader("token"));
         return Result.ok();
+    }
+
+    /*
+     *   功能描述:获取用户地址
+     *   @Param:Long userId
+     *   @Return:List<UserAddress>
+     */
+    @ApiOperation(value = "获取用户地址")
+    @GetMapping("inner/findUserAddressListByUserId/{userId}")
+    public List<UserAddress> findUserAddressListByUserId(@PathVariable String userId) {
+        return userAddressService.findUserAddressListByUserId(userId);
     }
 }

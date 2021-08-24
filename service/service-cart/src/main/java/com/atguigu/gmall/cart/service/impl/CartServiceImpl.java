@@ -1,17 +1,13 @@
 package com.atguigu.gmall.cart.service.impl;
 
-import com.atguigu.gmall.cache.GmallCache;
 import com.atguigu.gmall.cart.mapper.CartInfoMapper;
 import com.atguigu.gmall.cart.service.CartService;
-import com.atguigu.gmall.common.util.DateUtil;
 import com.atguigu.gmall.constant.RedisConst;
-import com.atguigu.gmall.model.cart.CarInfoVo;
 import com.atguigu.gmall.model.cart.CartInfo;
 import com.atguigu.gmall.model.product.SkuInfo;
 import com.atguigu.gmall.product.client.ProductFeignClient;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
-import jodd.time.TimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.Async;
@@ -21,7 +17,6 @@ import org.springframework.util.CollectionUtils;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -174,7 +169,7 @@ public class CartServiceImpl implements CartService {
         } else {
             redisTemplate.opsForHash().put(carteKey, skuId.toString(), cartInfo1);
         }
-        this.setCartKeyExpire(carteKey);
+       setCartKeyExpire(carteKey);
     }
 
 
@@ -201,6 +196,22 @@ public class CartServiceImpl implements CartService {
         }
     }
 
+    @Override
+    public List<CartInfo> getCartCheckedList(String userId) {
+        List<CartInfo> returnList = new ArrayList<>();
+//        查询cartCheckedList
+        QueryWrapper<CartInfo> queryWrapper = new QueryWrapper();
+        queryWrapper.eq("user_id", userId);
+        List<CartInfo> cartInfoList = cartInfoMapper.selectList(queryWrapper);
+        cartInfoList.stream().forEach(cartInfo -> {
+//            寻找选中的cartInfo
+            if (cartInfo.getIsChecked() == 1) {
+                returnList.add(cartInfo);
+            }
+        });
+        return returnList;
+    }
+
     /*
      *   功能描述:合并购物车
      *   @Param:String userId
@@ -216,21 +227,23 @@ public class CartServiceImpl implements CartService {
         List<CartInfo> cartListMySQL = getCartListMySQL(userId);
         for (CartInfo cartInfo : cartListMySQL) {
             CartInfo noCart = noCartMap.get(cartInfo.getSkuId());
-//            已经登录的购物车包含这个商品
-            if (noCartMap.containsKey(cartInfo.getSkuId())) {
-                //  数量相加
-                //  获取未登录的购物车对象
-                noCart.setId(cartInfo.getId());
-                noCart.setSkuNum(noCart.getSkuNum() + cartInfo.getSkuNum());
-                //  合并完了，还要更新一下updateTime
-                noCart.setUpdateTime(new Timestamp(new Date().getTime()));
-                noCart.setIsChecked(1);
-                cartInfoMapper.updateById(noCart);
-            } else {
-                //  细节： 修改userId,将
-                noCart.setUserId(cartInfo.getUserId());
-                noCart.setUpdateTime(new Timestamp(new Date().getTime()));
-                cartInfoMapper.updateById(noCart);
+            if (noCart != null) {
+//                已经登录的购物车包含这个商品
+                if (noCartMap.containsKey(cartInfo.getSkuId())) {
+                    //  数量相加
+                    //  获取未登录的购物车对象
+                    noCart.setId(cartInfo.getId());
+                    noCart.setSkuNum(noCart.getSkuNum() + cartInfo.getSkuNum());
+                    //  合并完了，还要更新一下updateTime
+                    noCart.setUpdateTime(new Timestamp(new Date().getTime()));
+                    noCart.setIsChecked(1);
+                    cartInfoMapper.updateById(noCart);
+                } else {
+                    //  细节： 修改userId,将
+                    noCart.setUserId(cartInfo.getUserId());
+                    noCart.setUpdateTime(new Timestamp(new Date().getTime()));
+                    cartInfoMapper.updateById(noCart);
+                }
             }
         }
         List<CartInfo> cartListMySQLAfter = getCartListMySQL(userId);
