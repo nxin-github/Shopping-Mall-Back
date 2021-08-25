@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 /**
@@ -26,7 +27,7 @@ public class OrderController {
      * @return
      */
     @GetMapping("trade.html")
-    public String trade(Model model) {
+    public String trade(HttpServletRequest request, Model model) {
         Result<Map<String, Object>> result = orderFeignClient.trade();
 
         model.addAllAttributes(result.getData());

@@ -11,10 +11,7 @@
 
     <artifactId>service-product</artifactId>
     <version>1.0</version>
-
     <packaging>jar</packaging>
-    <name>service-product</name>
-    <description>service-product</description>
 
     <dependencies>
         <dependency>

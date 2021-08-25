@@ -7,16 +7,17 @@
         <groupId>com.atguigu.gmall</groupId>
         <version>1.0</version>
     </parent>
+
     <modelVersion>4.0.0</modelVersion>
     <!--父工程-->
     <packaging>pom</packaging>
     <modules>
         <module>service-product</module>
-        <module>service-product</module>
         <module>service-item</module>
         <module>service-list</module>
         <module>service-user</module>
         <module>service-cart</module>
+        <module>service-order</module>
     </modules>
     <artifactId>service</artifactId>
 

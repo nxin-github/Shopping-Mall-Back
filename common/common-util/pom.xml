@@ -7,7 +7,7 @@
         <groupId>com.atguigu.gmall</groupId>
         <version>1.0</version>
     </parent>
-    <groupId>com.atguigu.gmall</groupId>
+
     <artifactId>common-util</artifactId>
     <version>1.0</version>
     <modelVersion>4.0.0</modelVersion>

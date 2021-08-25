@@ -11,7 +11,7 @@
 
     <artifactId>service-item</artifactId>
     <packaging>jar</packaging>
-    <description>service-item</description>
+
     <dependencies>
         <dependency>
             <groupId>com.atguigu.gmall</groupId>

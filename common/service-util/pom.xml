@@ -10,7 +10,6 @@
 <!--    <modelVersion>4.0.0</modelVersion>-->
 
 <!--    <artifactId>service-util</artifactId>-->
-    <groupId>com.atguigu.gmall</groupId>
     <artifactId>service-util</artifactId>
     <modelVersion>4.0.0</modelVersion>
 
@@ -46,24 +45,6 @@
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>
             <scope>provided</scope>
-        </dependency>
-        <!-- redis -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-redis</artifactId>
-        </dependency>
-
-        <!-- spring2.X集成redis所需common-pool2-->
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-pool2</artifactId>
-            <version>2.6.0</version>
-        </dependency>
-        <!-- redisson -->
-        <dependency>
-            <groupId>org.redisson</groupId>
-            <artifactId>redisson</artifactId>
-            <version>3.15.3</version>
         </dependency>
     </dependencies>
 </project>

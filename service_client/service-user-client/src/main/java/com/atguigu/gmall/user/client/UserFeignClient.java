@@ -16,6 +16,6 @@ import java.util.List;
  */
 @FeignClient(value = "service-user",fallback = UserDegradeFeignClient.class)
 public interface UserFeignClient {
-    @GetMapping("inner/findUserAddressListByUserId/{userId}")
+    @GetMapping("/api/user/passport/inner/findUserAddressListByUserId/{userId}")
     List<UserAddress> findUserAddressListByUserId(@PathVariable String userId);
 }
