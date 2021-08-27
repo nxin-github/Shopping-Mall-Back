@@ -1,0 +1,2 @@
+com\atguigu\gmall\order\client\OrderFeignClient.class
+com\atguigu\gmall\order\client\impl\OrderDegradeFeignClient.class

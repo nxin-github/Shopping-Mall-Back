@@ -1,0 +1,6 @@
+com\atguigu\gmall\list\repository\GoodsRepository.class
+com\atguigu\gmall\list\config\ThreadPoolConfig.class
+com\atguigu\gmall\list\service\SearchService.class
+com\atguigu\gmall\list\ServicelistApplication.class
+com\atguigu\gmall\list\controller\ListApiController.class
+com\atguigu\gmall\list\service\impl\SearchServiceImpl.class

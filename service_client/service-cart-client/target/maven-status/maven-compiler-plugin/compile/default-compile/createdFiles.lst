@@ -1,0 +1,2 @@
+com\atguigu\gmall\cart\client\CartFeignClient.class
+com\atguigu\gmall\cart\client\impl\CartDegradeFeignClient.class

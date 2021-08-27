@@ -1,0 +1,2 @@
+com\atguigu\gmall\user\client\UserFeignClient.class
+com\atguigu\gmall\user\client\impl\UserDegradeFeignClient.class

@@ -1,0 +1,2 @@
+com\atguigu\gmall\item\client\ItemFeignClient.class
+com\atguigu\gmall\item\client\impl\ItemDegradeFeignClient.class
