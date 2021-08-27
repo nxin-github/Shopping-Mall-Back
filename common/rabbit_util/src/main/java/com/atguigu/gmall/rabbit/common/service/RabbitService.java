@@ -15,7 +15,7 @@ public class RabbitService {
      * @param routingKey 路由键
      * @param message    消息
      */
-    public boolean sedMessage(String exchange, String routingKey, Object message) {
+    public boolean sendMessage(String exchange, String routingKey, Object message) {
         rabbitTemplate.convertAndSend(exchange, routingKey, message);
         return true;
     }

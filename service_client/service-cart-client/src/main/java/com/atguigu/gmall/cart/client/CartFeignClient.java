@@ -29,6 +29,9 @@ public interface CartFeignClient {
      *   @Param:Long userId
      *   @Return:List<CarInfo>
      */
-    @GetMapping("getCartCheckedList/{userId}")
+    @GetMapping("/api/cart/getCartCheckedList/{userId}")
     public List<CartInfo> getCartCheckedList(@PathVariable String userId);
+
+    @GetMapping("/api/cart/loadCartCache/{userId}")
+    Result loadCartCache(@PathVariable("userId") String userId);
 }

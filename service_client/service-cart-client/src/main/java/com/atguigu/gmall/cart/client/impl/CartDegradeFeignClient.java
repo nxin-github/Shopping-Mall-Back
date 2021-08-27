@@ -21,4 +21,9 @@ public class CartDegradeFeignClient implements CartFeignClient {
     public List<CartInfo> getCartCheckedList(String userId) {
         return null;
     }
+
+    @Override
+    public Result loadCartCache(String userId) {
+        return null;
+    }
 }

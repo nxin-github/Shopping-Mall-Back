@@ -10,6 +10,7 @@
         <module>server-gateway</module>
         <module>service_client</module>
         <module>web</module>
+        <module>ware-manage</module>
     </modules>
 
     <!--引入spring boot 父工程-->

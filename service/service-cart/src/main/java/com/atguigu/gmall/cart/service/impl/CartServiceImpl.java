@@ -212,6 +212,39 @@ public class CartServiceImpl implements CartService {
         return returnList;
     }
 
+    @Override
+    public List<CartInfo> loadCartToCache(String userId) {
+        //  声明一个集合
+        List<CartInfo> cartInfoList = new ArrayList<>();
+        //  根据用户Id 查询购物车列表
+        QueryWrapper<CartInfo> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("user_id",userId);
+        queryWrapper.orderByDesc("update_time");
+        cartInfoList = cartInfoMapper.selectList(queryWrapper);
+        //  判断这个集合
+        if (CollectionUtils.isEmpty(cartInfoList)) {
+            return cartInfoList;
+        }
+        //  获取缓存的key
+        String cartKey = getCarteKey(userId);
+        //  hset key field value  | hmset key map
+        HashMap<String, Object> map = new HashMap<>();
+        //  有数据的话， 将这个数据放入缓存！
+        for (CartInfo cartInfo : cartInfoList) {
+            //  细节： 查询购物车的时候： 有个字段 实时价格并不在数据库中！
+            cartInfo.setSkuPrice(productFeignClient.getProce(cartInfo.getSkuId()));
+            //  this.redisTemplate.opsForHash().put(cartKey,cartInfo.getSkuId().toString(),cartInfo);
+            map.put(cartInfo.getSkuId().toString(),cartInfo);
+        }
+        //  将map 直接放入缓存
+        redisTemplate.opsForHash().putAll(cartKey,map);
+
+        //  重新给购物车的key 设置一个过期时间
+        this.setCartKeyExpire(cartKey);
+        //  返回集合数据
+        return cartInfoList;
+    }
+
     /*
      *   功能描述:合并购物车
      *   @Param:String userId

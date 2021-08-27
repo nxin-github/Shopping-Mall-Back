@@ -38,7 +38,7 @@ public class CartApiController {
      *   @Return:result
      */
     @ApiOperation(value = "添加购物车")
-    @PostMapping("addToCart/{skuId}/{skuNum}")
+    @GetMapping("addToCart/{skuId}/{skuNum}")
     public Result addToCart(@PathVariable Long skuId, @PathVariable Integer skuNum, HttpServletRequest request) {
         String userId = AuthContextHolder.getUserId(request);
         if (StringUtils.isEmpty(userId)) {//未登录
@@ -112,5 +112,12 @@ public class CartApiController {
     @GetMapping("getCartCheckedList/{userId}")
     public List<CartInfo> getCartCheckedList(@PathVariable String userId) {
         return cartService.getCartCheckedList(userId);
+    }
+
+    //  定义一个接口：
+    @GetMapping("loadCartCache/{userId}")
+    public Result loadCartToCache(@PathVariable("userId") String userId) {
+        cartService.loadCartToCache(userId);
+        return Result.ok();
     }
 }

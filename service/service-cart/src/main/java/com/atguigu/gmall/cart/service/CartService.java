@@ -44,4 +44,6 @@ public interface CartService {
      *   @Return:List<CarInfo>
      */
     List<CartInfo> getCartCheckedList(String userId);
+
+    List<CartInfo> loadCartToCache(String userId);
 }

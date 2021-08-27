@@ -1,5 +1,6 @@
 package com.atguigu.gmall.order.service.impl;
 
+import com.atguigu.gmall.common.util.HttpClientUtil;
 import com.atguigu.gmall.model.enums.OrderStatus;
 import com.atguigu.gmall.model.enums.ProcessStatus;
 import com.atguigu.gmall.model.order.OrderDetail;
@@ -9,6 +10,7 @@ import com.atguigu.gmall.order.mapper.OrderInfoMapper;
 import com.atguigu.gmall.order.service.OrderService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,6 +34,8 @@ public class OrderServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo> im
     private OrderDetailMapper orderDetailMapper;
     @Autowired
     private RedisTemplate redisTemplate;
+    @Value("${ware.url}")
+    private String WARE_URL;
 
     @Override
     @Transactional
@@ -88,5 +92,12 @@ public class OrderServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo> im
         String tradeNo = UUID.randomUUID().toString().replace("-", "");
         redisTemplate.opsForValue().set(tradeNoKey, tradeNo);
         return tradeNo;
+    }
+
+    @Override
+    public boolean checkStock(Long skuId, Integer skuNum) {
+        // 远程调用http://localhost:9001/hasStock?skuId=10221&num=2
+        String result = HttpClientUtil.doGet(WARE_URL + "/hasStock?skuId=" + skuId + "&num=" + skuNum);
+        return "1".equals(result);
     }
 }

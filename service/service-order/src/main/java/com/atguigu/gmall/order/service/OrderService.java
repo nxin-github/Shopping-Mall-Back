@@ -37,4 +37,12 @@ public interface OrderService extends IService<OrderInfo> {
      * @return
      */
     String getTradeNo(String userId);
+
+    /**
+     * 验证库存
+     * @param skuId
+     * @param skuNum
+     * @return
+     */
+    boolean checkStock(Long skuId, Integer skuNum);
 }
