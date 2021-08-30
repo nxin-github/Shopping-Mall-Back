@@ -10,6 +10,9 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * @Author：王木风
  * @date 2021/8/27 21:09
@@ -17,16 +20,18 @@ import org.springframework.stereotype.Component;
  */
 @Configuration
 public class ConfirmReceiver {
+    //  监听者，消费者！
     @SneakyThrows
-    @RabbitListener(bindings=@QueueBinding(
-            value = @Queue(value = "queue.confirm",autoDelete = "false"),
-            exchange = @Exchange(value = "exchange.confirm",autoDelete = "true"),
-            key = {"routing.confirm"}))
-    public void process(Message message, Channel channel){
-        System.out.println("RabbitListener:"+new String(message.getBody()));
+    @RabbitListener(bindings = @QueueBinding(
+            value = @Queue(value = "queue.confirm",durable = "true",autoDelete = "false"),
+            exchange = @Exchange(value = "exchange.confirm"),
+            key = {"routing.confirm"}
+    ))
+    public void getMsg(String msg, Message message, Channel channel){
+        System.out.println("接收的消息：\t"+msg);
+        System.out.println("接收的消息：\t"+ new String(message.getBody()));
 
-        // false 确认一个消息，true 批量确认
+        //  手动确认 第二个参数表示是否批量确认！
         channel.basicAck(message.getMessageProperties().getDeliveryTag(),false);
-
     }
 }

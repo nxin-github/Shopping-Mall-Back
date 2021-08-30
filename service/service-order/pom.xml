@@ -28,6 +28,20 @@
             <artifactId>service-user-client</artifactId>
             <version>1.0</version>
         </dependency>
+
+        <!--rabbitmq消息队列-->
+        <dependency>
+            <groupId>com.atguigu.gmall</groupId>
+            <artifactId>rabbit_util</artifactId>
+            <version>1.0</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.atguigu.gmall</groupId>
+            <artifactId>service-payment-client</artifactId>
+            <version>1.0</version>
+        </dependency>
     </dependencies>
 
     <build>

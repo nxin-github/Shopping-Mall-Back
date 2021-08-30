@@ -12,20 +12,10 @@
     <artifactId>service-mq</artifactId>
 
     <dependencies>
-        <!--rabbitmq消息队列-->
         <dependency>
             <groupId>com.atguigu.gmall</groupId>
             <artifactId>rabbit_util</artifactId>
             <version>1.0</version>
         </dependency>
     </dependencies>
-    <build>
-        <finalName>service-mq</finalName>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
 </project>

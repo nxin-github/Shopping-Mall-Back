@@ -1,5 +1,6 @@
 package com.atguigu.gmall.order.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.atguigu.gmall.cart.client.CartFeignClient;
 import com.atguigu.gmall.common.result.Result;
 import com.atguigu.gmall.common.util.AuthContextHolder;
@@ -15,6 +16,7 @@ import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -166,5 +168,38 @@ public class OrderApiController {
         // 验证通过，保存订单！
         Long orderId = orderService.saveOrderInfo(orderInfo);
         return Result.ok(orderId);
+    }
+
+    /**
+     * 内部调用获取订单
+     * @param orderId
+     * @return
+     */
+    @GetMapping("inner/getOrderInfo/{orderId}")
+    public OrderInfo getOrderInfo(@PathVariable(value = "orderId") Long orderId){
+        return orderService.getOrderInfo(orderId);
+    }
+
+    //  http://localhost:8204/api/order/orderSplit?orderId=xxx&wareSkuMap=xxx
+    //  子订单的集合: orderInfo 中被拆分的订单！
+    @ApiOperation(value = "拆分订单")
+    @PostMapping("orderSplit")
+    public String orderSplit(HttpServletRequest request) {
+//  获取url 后面的参数
+        String orderId = request.getParameter("orderId");
+        String wareSkuMap = request.getParameter("wareSkuMap");
+
+        //  获取子订单集合 207,208
+        List<OrderInfo> subOrderInfoList =  orderService.orderSplit(orderId,wareSkuMap);
+        List<Map> list = new ArrayList<>();
+
+        //  循环遍历
+        for (OrderInfo orderInfo : subOrderInfoList) {
+            //  orderInfo ---> 转换Map
+            Map map = orderService.initWareOrder(orderInfo);
+            list.add(map);
+        }
+        //  返回子订单集合
+        return JSON.toJSONString(list);
     }
 }

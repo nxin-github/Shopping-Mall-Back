@@ -19,6 +19,8 @@ import com.atguigu.gmall.product.mapper.SpuImageMapper;
 import com.atguigu.gmall.product.mapper.SpuSaleAttrMapper;
 import com.atguigu.gmall.product.mapper.SpuSaleAttrValueMapper;
 import com.atguigu.gmall.product.service.SkuService;
+import com.atguigu.gmall.rabbit.common.constant.MqConst;
+import com.atguigu.gmall.rabbit.common.service.RabbitService;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -59,6 +61,8 @@ public class SkuServiceImpl implements SkuService {
     private SkuAttrValueMapper skuAttrValueMapper;
     @Autowired
     private SkuSaleAttrValueMapper skuSaleAttrValueMapper;
+    @Autowired
+    private RabbitService rabbitService;
 
     @Override
     public List<SpuImage> getImageBySpuId(Long spuId) {
@@ -109,6 +113,7 @@ public class SkuServiceImpl implements SkuService {
     }
 
     @Override
+    @Transactional
     public void onSale(Long skuId) {
         QueryWrapper<SkuInfo> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("id", skuId);
@@ -116,8 +121,12 @@ public class SkuServiceImpl implements SkuService {
         Integer isSale = skuInfo.getIsSale();
         if (isSale == 1) {
             skuInfo.setIsSale(0);
+            //商品下架
+            rabbitService.sendMessage(MqConst.EXCHANGE_DIRECT_GOODS, MqConst.ROUTING_GOODS_LOWER, skuId);
         } else if (isSale == 0) {
             skuInfo.setIsSale(1);
+            //商品上架
+            rabbitService.sendMessage(MqConst.EXCHANGE_DIRECT_GOODS, MqConst.ROUTING_GOODS_UPPER, skuId);
         } else {
             System.out.println("SkuServiceImpld的onSale方法出错了");
         }

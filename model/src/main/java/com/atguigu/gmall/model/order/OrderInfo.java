@@ -60,10 +60,12 @@ public class OrderInfo extends BaseEntity {
     private String tradeBody;
 
     @ApiModelProperty(value = "创建时间")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @TableField("create_time")
     private Date createTime;
 
     @ApiModelProperty(value = "失效时间")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @TableField("expire_time")
     private Date expireTime;
 

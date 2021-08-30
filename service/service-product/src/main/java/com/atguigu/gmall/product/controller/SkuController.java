@@ -96,7 +96,7 @@ public class SkuController {
      *   @Param:skuId
      *   @Return:
      */
-    @ApiOperation(value = "上架")
+    @ApiOperation(value = "下架")
     @GetMapping("cancelSale/{skuId}")
     public Result cancelSale(@PathVariable Long skuId) {
         skuService.onSale(skuId);

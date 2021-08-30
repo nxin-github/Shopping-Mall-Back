@@ -1,1 +1,5 @@
+D:\IDEA\gmall-parent\service\service-mq\src\main\java\com\atguigu\gmall\mq\controller\MqController.java
+D:\IDEA\gmall-parent\service\service-mq\src\main\java\com\atguigu\gmall\mq\config\DeadLetterMqConfig.java
+D:\IDEA\gmall-parent\service\service-mq\src\main\java\com\atguigu\gmall\mq\receiver\ConfirmReceiver.java
+D:\IDEA\gmall-parent\service\service-mq\src\main\java\com\atguigu\gmall\mq\receiver\DeadLetterReceiver.java
 D:\IDEA\gmall-parent\service\service-mq\src\main\java\com\atguigu\gmall\mq\ServiceMqApplication.java

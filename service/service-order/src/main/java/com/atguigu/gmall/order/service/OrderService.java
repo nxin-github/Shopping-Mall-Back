@@ -1,7 +1,11 @@
 package com.atguigu.gmall.order.service;
 
+import com.atguigu.gmall.model.enums.ProcessStatus;
 import com.atguigu.gmall.model.order.OrderInfo;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * @Author：王木风
@@ -45,4 +49,46 @@ public interface OrderService extends IService<OrderInfo> {
      * @return
      */
     boolean checkStock(Long skuId, Integer skuNum);
+
+    /**
+     * 取消订单
+     *
+     * @param orderId
+     */
+    void execExpiredOrder(Long orderId ,String flag);
+
+    /**
+     * 更新订单的状态！
+     * @param orderId
+     * @param processStatus
+     */
+    void updateOrderStatus(Long orderId, ProcessStatus processStatus);
+
+    /**
+     * 根据订单Id 查询订单信息
+     * @param orderId
+     * @return
+     */
+    OrderInfo getOrderInfo(Long orderId);
+
+    /**
+     * 发送消息给库存系统：
+     * @param orderId
+     */
+    void sendOrderStatus(Long orderId);
+
+    /**
+     * 将orderInfo 转换为Map 集合
+     * @param orderInfo
+     * @return
+     */
+    Map initWareOrder(OrderInfo orderInfo);
+
+    /**
+     * 拆单方法
+     * @param orderId
+     * @param wareSkuMap
+     * @return
+     */
+    List<OrderInfo> orderSplit(String orderId, String wareSkuMap);
 }
