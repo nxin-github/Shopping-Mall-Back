@@ -2,6 +2,7 @@ package com.atguigu.gmall.all.controller;
 
 import com.atguigu.gmall.common.result.Result;
 import com.atguigu.gmall.order.client.OrderFeignClient;
+import org.springframework.aop.framework.autoproxy.AbstractAdvisorAutoProxyCreator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,5 +31,10 @@ public class OrderController {
 
         model.addAllAttributes(result.getData());
         return "order/trade";
+    }
+
+    @GetMapping("myOrder.html")
+    public String myOrder(Model model) {
+        return "order/myOrder";
     }
 }

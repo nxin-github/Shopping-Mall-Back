@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.util.Map;
 
 /**
- * @author atguigu-mqx
+ * @author 王木风
  */
 @Component
 public class OrderReceiver {

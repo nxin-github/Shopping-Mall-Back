@@ -12,6 +12,4 @@ import org.springframework.stereotype.Repository;
  */
 @Mapper
 @Repository
-public interface PaymentInfoMapper extends BaseMapper<PaymentInfo> {
-
-}
+public interface PaymentInfoMapper extends BaseMapper<PaymentInfo> {}

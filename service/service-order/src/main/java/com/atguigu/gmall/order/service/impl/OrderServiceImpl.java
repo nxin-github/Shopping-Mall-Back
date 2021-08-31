@@ -129,6 +129,22 @@ public class OrderServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo> im
         }
     }
 
+    @Override
+    public void execExpiredOrder(Long orderId) {
+        //  本质：更新状态！
+        //        OrderInfo orderInfo = new OrderInfo();
+        //        orderInfo.setId(orderId);
+        //        orderInfo.setOrderStatus(OrderStatus.CLOSED.name());
+        //        orderInfo.setProcessStatus(ProcessStatus.CLOSED.name());
+        //        //  更新数据！
+        //        orderInfoMapper.updateById(orderInfo);
+
+        updateOrderStatus(orderId, ProcessStatus.CLOSED);
+
+        //  发送消息更新paymentInfo 记录！
+        this.rabbitService.sendMessage(MqConst.EXCHANGE_DIRECT_PAYMENT_CLOSE,MqConst.ROUTING_PAYMENT_CLOSE,orderId);
+    }
+
     //  后续会根据订单Id 进行更新状态！ 更新成支付，发货等！ 做方法抽取！
     //  从进度状态中能够获取订单状态！
     public void updateOrderStatus(Long orderId, ProcessStatus processStatus) {
@@ -153,8 +169,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderInfoMapper, OrderInfo> im
     @Override
     public void sendOrderStatus(Long orderId) {
         updateOrderStatus(orderId, ProcessStatus.NOTIFIED_WARE);
-        String wareJson = initWareOrder(orderId);
-        rabbitService.sendMessage(MqConst.EXCHANGE_DIRECT_WARE_STOCK, MqConst.ROUTING_WARE_STOCK, wareJson);
+        OrderInfo orderInfo = getOrderInfo(orderId);
+        Map map = initWareOrder(orderInfo);
+        rabbitService.sendMessage(MqConst.EXCHANGE_DIRECT_WARE_STOCK, MqConst.ROUTING_WARE_STOCK, JSON.toJSONString(map));
     }
 
     // 根据orderId 获取json 字符串

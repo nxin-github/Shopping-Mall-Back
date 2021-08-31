@@ -4,7 +4,6 @@ import com.alipay.api.AlipayApiException;
 import com.alipay.api.internal.util.AlipaySignature;
 import com.atguigu.gmall.common.result.Result;
 import com.atguigu.gmall.model.enums.PaymentType;
-import com.atguigu.gmall.model.order.OrderInfo;
 import com.atguigu.gmall.model.payment.PaymentInfo;
 import com.atguigu.gmall.payment.config.AlipayConfig;
 import com.atguigu.gmall.payment.service.AlipayService;
@@ -15,14 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -41,6 +36,7 @@ public class AlipayController {
 
     @ApiOperation(value = "提交订单")
     @RequestMapping("submit/{orderId}")
+    @ResponseBody
     public String aliPay(@PathVariable Long orderId) {
         String from = "";
         try {

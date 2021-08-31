@@ -58,6 +58,12 @@ public interface OrderService extends IService<OrderInfo> {
     void execExpiredOrder(Long orderId ,String flag);
 
     /**
+     * 取消订单
+     * @param orderId
+     */
+    void execExpiredOrder(Long orderId);
+
+    /**
      * 更新订单的状态！
      * @param orderId
      * @param processStatus
