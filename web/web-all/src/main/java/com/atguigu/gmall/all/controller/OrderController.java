@@ -2,7 +2,6 @@ package com.atguigu.gmall.all.controller;
 
 import com.atguigu.gmall.common.result.Result;
 import com.atguigu.gmall.order.client.OrderFeignClient;
-import org.springframework.aop.framework.autoproxy.AbstractAdvisorAutoProxyCreator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,30 +10,24 @@ import org.springframework.web.bind.annotation.GetMapping;
 import java.util.Map;
 
 /**
- * @Author：王木风
- * @date 2021/8/24 20:49
- * @description：
+ * @author 王木风
  */
 @Controller
 public class OrderController {
+
     @Autowired
     private OrderFeignClient orderFeignClient;
 
-    /**
-     * 确认订单
-     * @param model
-     * @return
-     */
+    //  http://order.gmall.com/trade.html
     @GetMapping("trade.html")
-    public String trade(Model model) {
+    public String trade(Model model){
+
+        //  远程调用获取数据
         Result<Map<String, Object>> result = orderFeignClient.trade();
-
+        //  保存数据
         model.addAllAttributes(result.getData());
-        return "order/trade";
-    }
 
-    @GetMapping("myOrder.html")
-    public String myOrder(Model model) {
-        return "order/myOrder";
+        //  返回下单页面
+        return "order/trade";
     }
 }
